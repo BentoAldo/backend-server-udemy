@@ -7,8 +7,23 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
+let bodyParser = require('body-parser');
+
 //Inicializar variables
 let app = express();
+
+//Body Parser
+
+//parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+//parse application/json
+app.use(bodyParser.json());
+
+//Importar rutas
+
+let appRoutes = require('./routes/app');
+let usuarioRoutes = require('./routes/usuario');
 
 //Conexión a la base de datos
 mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', null,
@@ -19,13 +34,8 @@ mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', null,
     });
 
 //Rutas
-app.get('/', ( req, res, next ) => {
-
-    res.status(200).json({
-        ok: true,
-        message: 'Petición realizada correctamente'
-    })
-});
+app.use('/usuario', usuarioRoutes);
+app.use('/', appRoutes);
 
 
 // Escuchar peticiones
