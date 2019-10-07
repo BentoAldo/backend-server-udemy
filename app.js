@@ -15,15 +15,15 @@ let app = express();
 //Body Parser
 
 //parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
-
 //parse application/json
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use( bodyParser.json() );
 
 //Importar rutas
 
 let appRoutes = require('./routes/app');
 let usuarioRoutes = require('./routes/usuario');
+let loginRoutes = require('./routes/login');
 
 //Conexión a la base de datos
 mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', null,
@@ -35,6 +35,7 @@ mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', null,
 
 //Rutas
 app.use('/usuario', usuarioRoutes);
+app.use('/login', loginRoutes);
 app.use('/', appRoutes);
 
 
